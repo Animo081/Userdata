@@ -82,7 +82,7 @@ $(document).ready(function(){
         value = setChange();
         if (Cchange[0] == "C")
             Cchange = Cchange.substr(1,Cchange.length);
-        $.post("change.php",{field:Cchange,value:value},function(){
+        $.post("php/change.php",{field:Cchange,value:value},function(){
             getData();
             getTable(); 
         });
@@ -96,10 +96,10 @@ $(document).ready(function(){
         value = setHChange();
         if (Chchange[0] == "C" && Chchange[1] == "h")
             Chchange = Chchange.substr(2,Chchange.length);
-        $.post("change_h.php",{field:Chchange,value:value,id:row_id},function(){
+        $.post("php/change_h.php",{field:Chchange,value:value,id:row_id},function(){
             getData();
             getTable();
-            $.post("show_user.php",{id:row_id},function(data){
+            $.post("php/show_user.php",{id:row_id},function(data){
                     var result = $.parseJSON(data);
                     $("#container").html("<img style='float:right;padding:20px' alt='image' src='" + result.url + "'>ID: " + result.id + "<br>Login: " + result.login + "<br>First Name: " + result.fname + "<br>Last Name: " + result.lname + "<br>Role: " + result.role);
             });
@@ -123,7 +123,7 @@ $(document).ready(function(){
             $("input[name='change_Hval']").hide();
             $("button[class='apply h']").hide();
         }
-        $.post("delete.php",{id:$(this).attr('name')},function(){
+        $.post("php/delete.php",{id:$(this).attr('name')},function(){
             if (parseInt(this_name) == user_id){
                 $('#me_container').hide();
                 logout();
@@ -139,7 +139,7 @@ $(document).ready(function(){
         if (e.target.getAttribute('src') != "http://s1.iconbird.com/ico/2013/12/505/w450h4001385925290Delete.png"){
             var id = $(this).attr('id');
             if (row_id != id){
-                $.post("show_user.php",{id:id},function(data){
+                $.post("php/show_user.php",{id:id},function(data){
                     var result = $.parseJSON(data);
                     $("#container").show();
                     $("#container").html("<img style='float:right;padding:20px' alt='image' src='" + result.url + "'>ID: " + result.id + "<br>Login: " + result.login + "<br>First Name: " + result.fname + "<br>Last Name: " + result.lname + "<br>Role: " + result.role);
@@ -163,10 +163,20 @@ $(document).ready(function(){
         };
     });
     
-    
-    $('#login_form').on('submit',function(e){
+    $("#sign_up_form").on('submit',function(){
         $.ajax({
-            url:'login.php',
+            url:'php/sign_up.php',
+            type:"POST",
+            data:$("#" + 'sign_up_form').serialize(),
+            success:function(e){
+                alert(e);
+            }
+        });
+    });
+    
+    $('#login_form').on('submit',function(){
+        $.ajax({
+            url:'php/login.php',
             type:"POST",
             data:$("#"+'login_form').serialize()
         });
@@ -203,7 +213,7 @@ function setHChange(){
 }
 
 function getData(){
-    $.post("getData.php",function(data){
+    $.post("php/getData.php",function(data){
         var result = $.parseJSON(data);
         if (Object.keys(result).length){
             $("#me_container").html("<div class='containers c1'><img style='float:right;padding:20px' alt='image' src='" + result.url + "'>ID: " + result.id + "<br>Login: " + result.login + "<br>E-mail: " + result.e_mail + "<br>First Name: " + result.fname + "<br>Last Name: " + result.lname + "<br>Role: " + result.role + "</div>");
@@ -219,12 +229,12 @@ function getData(){
 }
 
 function getTable(){
-    $.post("show_data.php",function(data){
+    $.post("php/show_data.php",function(data){
         $('#table_cont').html(data);        
     });
 }
 
 function logout(){
-    $.post("logout.php");
+    $.post("php/logout.php");
     document.location.reload(true);
 }

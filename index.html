@@ -3,13 +3,13 @@
     
     <head>
         <meta charset="UTF-8">
-        <link href="beauty.css" rel="stylesheet" type="text/css">
+        <link href="css/beauty.css" rel="stylesheet" type="text/css">
         <link href="https://fonts.googleapis.com/css?family=Mali" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Caveat|Marck+Script|Play|Poiret+One" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Amatic+SC:700" rel="stylesheet">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="mainjs.js"></script>
+        <script src="js/mainjs.js"></script>
     </head>
     
     <body class="bg">
@@ -32,7 +32,7 @@
         <button type="button" name="change_attr" class="apply h">Apply</button>
         <div id="table_cont">
         </div>
-        <form method="POST" action="sign_up.php" class="form sign">
+        <form method="POST" class="form sign" id="sign_up_form">
             <div>
                 Login<br><input type="text" name="login" /><br>
                 Password<br><input type="password" name="password" /><br>
@@ -43,7 +43,7 @@
                 <img alt="image" src="" id="image" onerror="this.onerror=null;this.src='https://orig00.deviantart.net/2c0f/f/2012/343/c/4/lumpy_space_princess_2_by_doublehit-d5nkdhm.gif';"><br>
                 <div class="button_block">
                     <button type="button" onclick="setSrc()">Check img</button><br>
-                    <button type="submit" name="submit">Sign up</button>
+                    <button type="submit" name="submit" class="sign_up">Sign up</button>
                 </div>
             </div>
         </form>

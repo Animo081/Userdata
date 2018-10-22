@@ -65,7 +65,7 @@ tr{
     font-family: 'Caveat', cursive;
     font-size: 30px;
     text-shadow: black 0 0 30px;
-    background-image: url("forest.gif");
+    background-image: url("../img/forest.gif");
     background-size: auto;
     color: rgb(220, 240, 255);
     border-radius: 15px;
@@ -83,7 +83,7 @@ tr{
     width: 550px;
     padding-left: 30px;
     border-radius: 15px;
-    background-image: url("sakura.gif");
+    background-image: url("../img/sakura.gif");
     background-size: auto;
     color: rgb(220, 240, 255);
     text-shadow: black 0 0 30px;
