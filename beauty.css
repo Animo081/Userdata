@@ -1,0 +1,321 @@
+body,html{
+    height: 100%;
+}
+
+.bg{
+    background-image: url("https://wallpapersite.com/images/pages/pic_h/11895.jpg");
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+img{
+    max-height: 190px;
+    max-width: 190px;
+}
+
+table{
+    position: absolute;
+    width: 900px;
+    text-align: center;
+    top: 50px;
+    right: 0;
+    border-collapse: collapse;
+    background-color: rgba(18,81,98,0.5);
+}
+
+tr{
+    border: 2px dashed rgba(255,255,255,.3);
+    font-family: 'Amatic SC', cursive;
+    font-size: 30px;
+    color: azure;
+    text-shadow: black 0 0 35px;
+    letter-spacing: 1px;
+}
+
+.delete_button{
+    height: 70px;
+    width: 70px;
+    background-color: transparent;
+    border: 0px;
+}
+
+.delete_bi{
+    height: 50px;
+    width: 50px;
+}
+
+.timg{
+    max-height: 130px;
+    max-width: 130px;
+}
+
+.containers{
+    position: fixed;
+    font-family: 'Amatic SC', cursive;
+    
+}
+
+.containers.c1{
+    top:80px;
+    width: 550px;
+    left:-11px;
+    font-family: 'Caveat', cursive;
+    font-size: 30px;
+    text-shadow: black 0 0 30px;
+    background-image: url("forest.gif");
+    background-size: auto;
+    color: rgb(220, 240, 255);
+    border-radius: 15px;
+    text-align: left;
+    padding-left: 30px;
+    
+}
+
+.containers.c2{
+    bottom: 76px;
+    left: -11px;
+    font-size: 35px;
+    text-align: left;
+    font-family: 'Caveat', cursive;
+    width: 550px;
+    padding-left: 30px;
+    border-radius: 15px;
+    background-image: url("sakura.gif");
+    background-size: auto;
+    color: rgb(220, 240, 255);
+    text-shadow: black 0 0 30px;
+}
+
+.form{
+    display: none;
+    position: absolute;
+    align-self: center;
+    justify-content: center;
+}
+
+.form.login{
+    position: absolute;
+    left: 40%;
+    top: 23%;
+    text-align: center;
+    font-family: 'VT323', monospace;
+    font-size: 55px;
+    background-color: rgba(0,0,0,.2);
+    height: 420px;
+    color: rgba(204, 122, 0,1);
+    text-shadow: black 0 0 45px;
+    border-radius: 15px;
+}
+
+.form.login div{
+    margin-top: 48px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.form.login input{
+    width: 320px;
+    height: 30px;
+    text-align: center;
+    background-color: rgba(0,0,0,.5);
+    border: none;
+    border-radius: 15px;
+    color: white;
+}
+
+.form.login button{
+    margin-top: 80px;
+    width: 190px;
+    background-color: rgba(255,255,255,.1);
+    border: 3px solid rgba(0,0,0,.1);
+    border-radius: 15px;
+    color: black;
+    font-size: 30px;
+    font-family: 'VT323', monospace;
+}
+
+
+
+.form.sign{
+    position: absolute;
+    left: 38%;
+    top: 3%;
+    text-align: center;
+    font-family: 'VT323', monospace;
+    font-size: 30px;
+    background-color: rgba(0,0,0,.2);
+    height: 680px;
+    color: rgba(204, 122, 0,1);
+    text-shadow: black 0 0 45px;
+    border-radius: 15px;
+}
+
+.form.sign div{
+    margin-top: 20px;
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+.form.sign div.button_block{
+    position: absolute;
+    bottom: 10px;
+    left: 17%;
+}
+
+.form.sign input{
+    width: 320px;
+    height: 30px;
+    text-align: center;
+    background-color: rgba(0,0,0,.5);
+    border: none;
+    border-radius: 15px;
+    color: white;
+}
+
+.form.sign img{
+    margin-top: 10px;
+    max-height: 130px;
+}
+
+.form.sign button{
+    margin-bottom: 10px;
+    width: 190px;
+    background-color: rgba(255,255,255,.1);
+    border: 3px solid rgba(0,0,0,.1);
+    border-radius: 15px;
+    color: black;
+    font-size: 30px;
+    font-family: 'VT323', monospace;
+}
+
+
+
+
+
+.connect:not(#name_container){
+    background-color:black;
+    border: none;
+    font-family: 'Amatic SC', cursive;
+    color: cyan;
+    font-size: 17px;
+}
+
+.connect#name_container{
+    color: white;
+    font-family: 'Amatic SC', cursive;
+    font-size: 18px;
+    padding: 7px;
+}
+
+.connect[name="logout"]{
+    display: none;
+}
+
+.show_me{
+    background-color: transparent;
+    border:none;
+    font-family: 'Amatic SC', cursive;
+    font-size: 40px;
+    position: fixed;
+    left: 15px;
+    top: 10px;  
+    display: none;
+}
+
+.change_me{
+    background-color: rgba(18,81,98,.6);
+    border:3px double rgba(255,255,255,.4);
+    font-family: 'Amatic SC', cursive;
+    text-shadow: rgb(220, 240, 255) 0 0 8px;
+    font-size: 40px;
+    position: fixed;
+    left: 12px;
+    top: 310px;  
+    display: none;
+}
+
+.change_me.him{
+    top: 653px;
+    text-shadow: rgba(220, 240, 255,0.6) 0 0 8px;
+}
+
+
+.change_row{
+    display: none;
+    position: fixed;
+    left: 12px;
+    top: 374px;
+}
+
+.change_row button{
+    background-color: rgba(18,81,98,.6);
+    border:1px solid rgba(255,255,255,.4);
+    font-family: 'Amatic SC', cursive;
+    font-size: 30px;
+    color: rgb(220, 240, 255);
+    text-shadow: rgb(220, 240, 255) 0 0 30px;
+}
+
+.change_row.h{
+    left: 173px;
+    top:682px;
+}
+
+.change_row.h button{
+    font-size: 20px;
+}
+
+input[name="change_val"]{
+    width: 210px;
+    height: 35px;
+    text-align: center;
+    background-color: rgba(255,255,255,.8);
+    border: 2px solid rgba(0,0,0,.6);
+    border-radius: 10px;
+    position: fixed;
+    top: 328px;
+    left: 173px;
+    display: none;
+}
+
+input[name="change_Hval"]{
+    width: 190px;
+    height: 20px;
+    text-align: center;
+    background-color: rgba(255,255,255,.8);
+    border: 2px solid rgba(0,0,0,.6);
+    border-radius: 10px;
+    position: fixed;
+    top: 652px;
+    left: 173px;
+    display: none;
+}
+
+.apply{
+    background-color: rgba(18,81,98,.6);
+    border:3px double rgba(255,255,255,.4);
+    font-family: 'Amatic SC', cursive;
+    text-shadow: rgb(220, 240, 255) 0 0 8px;
+    font-size: 40px;
+    position: fixed;
+    left: 405px;
+    top: 310px;
+    display: none;
+}
+
+.apply.h{
+    left: 370px;
+    font-size: 40px;
+    top: 653px;
+}
+
+
+
+
+
+
+
+
