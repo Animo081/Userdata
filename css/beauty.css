@@ -1,5 +1,6 @@
 body,html{
     height: 100%;
+	margin: 0px;
 }
 
 .bg{
@@ -191,10 +192,6 @@ tr{
     font-family: 'VT323', monospace;
 }
 
-
-
-
-
 .connect:not(#name_container){
     background-color:black;
     border: none;
@@ -312,10 +309,160 @@ input[name="change_Hval"]{
     top: 653px;
 }
 
+#button_tr{
+	display: none;
+	position: absolute;
+	top:407px;
+	left:944px;
+	color: rgba(204, 122, 0,1);
+    text-shadow: black 0 0 45px;
+	font-family: 'VT323', monospace;
+    font-size: 30px;
+	background-color: transparent;
+	border: none;
+}
 
 
 
 
 
 
+.play{
+    display: none;
+    background-color: rgba(18,81,98,.3);
+    border:1px solid rgba(255,255,255,.8);
+    border-radius: 10px;
+    font-family: 'Amatic SC', cursive;
+    text-shadow: rgb(220, 240, 255) 0 0 8px;
+    font-size: 40px;
+    position: fixed;
+    left: 540px;
+    top: 87px;
+    height: 212px;
+    width: 40px;
+}
+
+.play img{
+    position: absolute;
+    top: 39%;
+    max-height: 40px;
+    max-width: 40px;
+}
+
+.play.him{
+    height: 208px;
+    top: 429px;
+}
+
+.video_input{
+	display: none;
+	height: 100vh;
+	width:100vw;
+	color: rgb(77, 255, 255);
+    text-shadow: black 0 0 34px;
+	background-color: rgba(18,81,98,0.75);
+	background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+	position: fixed;
+	z-index: 1;
+}
+
+.video_input button.fb{
+	position: absolute;
+	left:20px;
+	top:20px;
+	background-color: transparent;
+	border: none;
+	height: 100px;
+	width: 100px;
+}
+
+.video_input button.sb{
+	position: absolute;
+	left: 20px;
+	top:120px;
+	background-color: transparent;
+	border: none;
+	height: 100px;
+	width: 100px;
+}
+
+.video_input button.mb{
+	position: absolute;
+	left: 20px;
+	top:220px;
+	background-color: transparent;
+	border: none;
+	height: 100px;
+	width: 100px;
+}
+
+.video_input button img{
+	background-color: transparent;
+	max-height: 70px;
+	max-width: 70px;
+}
+
+.video_input div{
+	top: 70px;
+	position: relative;
+	background-color: transparent;
+	border-radius: 15px;
+	text-align: center;
+	font-size: 34px;
+    font-family: 'VT323', monospace;
+}
+
+.video_input input{
+    width: 320px;
+    height: 30px;
+    text-align: center;
+    background-color: rgba(0,0,0,.5);
+    border: none;
+    border-radius: 15px;
+    color: white;
+	margin-top: 15px;
+	margin-bottom: 30px;
+}
+
+
+.video_input div button{
+	margin-top: 15px;
+	width: 190px;
+    background-color: rgba(255,255,255,.1);
+    border: 3px solid rgba(0,0,0,.1);
+    border-radius: 15px;
+    color: black;
+    font-size: 30px;
+    font-family: 'VT323', monospace;
+}
+
+
+.video{
+	position: relative;
+	left: 457px;
+	text-align: center;
+	height: 340px;
+	width: 605px;
+}
+
+#music_enable{
+	position: absolute;
+	height: 40px;
+	width: 40px;
+	left: 1350px;
+	top: 5px;
+	border: none;
+	background: none;
+	background-color: transparent;
+} 
+
+#music_enable img{
+	height: 30px;
+	width: 30px;
+	background: none;
+	background-color: transparent;	
+}
 

@@ -10,7 +10,7 @@ if (($_POST['login']) &&
             $password = $_POST['password'];
             $fname = $_POST['fname'];
             $lname = $_POST['lname'];
-            $e_mail = $_POST['e-mail'];
+            $e_mail = $_POST['e_mail'];
             $url = $_POST['image'];
             $id = 1;
             while(mysqli_num_rows($conn->query("SELECT id FROM userdata WHERE id=" . $id)))
@@ -24,5 +24,7 @@ if (($_POST['login']) &&
 }
 
 CloseCon($conn);
-echo "no";
+
+echo "yes";
+
 ?>
