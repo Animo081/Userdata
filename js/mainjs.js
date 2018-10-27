@@ -2,13 +2,13 @@ $(document).ready(function(){
     
     window.user_id = -1;
     window.role = "";
+	window.vidosik = "";
     var Cchange = "";
     var Chchange = "";
     var value = "";
     var row_id = -1;
 	var vid_id = -1;
 	var hidden = true;
-	var vid_id = -1;
 	var music_enable = true;
 	var stop = false;
 
@@ -314,18 +314,34 @@ $(document).ready(function(){
 	
 	$("button.fb").on("click",function(){
 		$(".video_input").hide();
-		document.getElementById("player").play();
+		if (stop)
+			document.getElementById("player").play();
 		document.getElementById("vid").pause();
 		document.getElementById("yid").src = "";
+		$("#yid").css("display","none");
+		$("#vid").css("display","none");
 	});
 	
 	$("button.sb").on("click",function(){
 		if ($('#yid').css("display") == "block")
 			$.post("php/set_media.php",{id:vid_id,url:document.getElementById("yid").src,type:"video"});
 		else
-			if ($('#vid').css("display") == "block")
-				$.post("php/set_media.php",{id:vid_id,url:document.getElementById("vid").src,type:"video"});
-			else
+			if ($('#vid').css("display") == "block"){
+				vidosik.append("id",vid_id);
+				vidosik.append("type","video");
+				$.ajax({
+					url:"php/set_media.php",
+					type:"POST",
+					data:vidosik,
+					processData:false,
+					contentType:false,
+					success:function(){
+						$.post("php/take_media.php",{id:vid_id,type:"video"},function(data){
+							document.getElementById("vid").src = data;
+						});
+					}
+				});
+			}else
 				alert("No video to send");
 	});
 	
@@ -379,15 +395,7 @@ $(document).ready(function(){
 		readURLv(this);
 	});
 	
-	/*$("#vid").on("play",function(){
-		document.getElementById("player").pause();
-	});
 	
-	$("#vid").on("pause",function(){
-		if (stop)
-			document.getElementById("player").play();
-	});
-	*/
 	$(window).keypress(function(e) {
   		var video = document.getElementById("vid");
   		if (e.which == 32) {
@@ -397,33 +405,44 @@ $(document).ready(function(){
       			video.pause();
   		}
 	});
-	
-	
-	
+		
 })
 
 function readURLm(input){
 	if (input.files && input.files[0]) {
-		var fullPath = input.value;
-        var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
-    	var filename = fullPath.substring(startIndex);
-    	if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {filename = filename.substring(1);}
-		$.post("php/set_media.php",{id:user_id,url:"../audio/" + filename,type:"audio"},function(e){
-			getData();
+		var muzika = new FormData();
+		muzika.append("file",input.files[0]);
+		muzika.append("id",user_id);
+		muzika.append("type","audio");
+		$.ajax({
+			url:"php/set_media.php",
+			type:"POST",
+			data:muzika,
+			processData:false,
+			contentType:false,
+			success:function(){
+				getData();
+			}
 		});
     }
 }
 
 function readURLv(input){
 	if (input.files && input.files[0]) {
-		var fullPath = input.value;
+		/*var fullPath = input.value;
         var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
     	var filename = fullPath.substring(startIndex);
-    	if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {filename = filename.substring(1);}
-		document.getElementById("yid").src = "";
-		$("#yid").css("display","none");
-		$("#vid").css("display","block");
-    	document.getElementById("vid").src = "../video/" + filename;
+    	if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {filename = filename.substring(1);}*/
+		vidosik = new FormData();
+		vidosik.append("file",input.files[0]);
+		var reader = new FileReader();
+        reader.onload = function (e) {
+            document.getElementById("yid").src = "";
+			$("#yid").css("display","none");
+			$("#vid").css("display","block");
+			document.getElementById("vid").src = e.target.result;
+        }
+        reader.readAsDataURL(input.files[0]);
     }
 }
 
@@ -475,8 +494,9 @@ function getData(){
             user_id = result.id;
             role = result.role;
 			$.post("php/take_media.php",{id:user_id,type:"audio"},function(data){
-				if (data != "not found")
+				if (data != "not found" && document.getElementById("player").src != data){
 					document.getElementById("player").src = data;
+				}
 			})
             $("button[name='logout']").show();
             $("button[name='show_login']").hide();
