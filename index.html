@@ -13,73 +13,79 @@
     </head>
     
     <body class="bg">
-		<button id="music_enable"><img id="mute" src="https://png.icons8.com/ios/2x/speaker.png"></button>
-		<audio controls src="" id="player" style="display: none"></audio>
-        <div class="play me" name="me">
-            <img src="https://mbtskoudsalg.com/images/play-button-overlay-png.png">
-        </div>
-        <div class="play him" name="him">
-            <img src="https://mbtskoudsalg.com/images/play-button-overlay-png.png">
-        </div>
-		<div class="video_input">
-			<div>
-				<video style="display: none" class="video v" controls id="vid">
-				</video>
-				<iframe style="display: none" class="video y" id="yid" src="" allowfullscreen allow="autoplay; encrypted-media"></iframe>
-				<div class="show_v" id="show_v"></div><br>
-				YouTube link<br>
-				<input type="text" id="youtube_in"><br>
-				LocalVideo link<br>
-				<button name="set_video" id="button_v">Uploud</button>
-				<input type="file" id="video_in" style="display: none"><br>
+		<canvas class="canvas" style="display: none"></canvas>
+		<div class="all">
+			<button id="music_enable"><img id="mute" src="https://png.icons8.com/ios/2x/speaker.png"></button>
+			<audio controls loop src="" id="player" style="display: none"></audio>
+			<div class="play me" name="me">
+				<img src="https://mbtskoudsalg.com/images/play-button-overlay-png.png">
 			</div>
-			<button class="fb"><img src="https://cdn3.iconfinder.com/data/icons/sympletts-free-sampler/128/circle-close-128.png"></button>
-			<button class="sb"><img src="https://cdn.onlinewebfonts.com/svg/img_412726.png"></button>
-			<button class="mb"><img src="https://images-eu.ssl-images-amazon.com/images/I/51a1NKExrxL.png"></button>
-			<input type="file" id="music_in" style="display: none">
+			<div class="play him" name="him">
+				<img src="https://mbtskoudsalg.com/images/play-button-overlay-png.png">
+			</div>
+			<div class="video_input">
+				<div>
+					<video style="display: none" class="video v" controls id="vid">
+					</video>
+					<iframe style="display: none" class="video y" id="yid" src="" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+					<span class="no_v" style="display: none">No intro inserted</span>
+					<span class="show_v"><br>
+						YouTube link<br>
+						<input type="text" id="youtube_in"><br>
+						LocalVideo link<br>
+						<button name="set_video" id="button_v">Uploud</button>
+						<input type="file" id="video_in" style="display: none"><br>
+					</span>
+				</div>
+				<button class="fb"><img src="https://cdn3.iconfinder.com/data/icons/sympletts-free-sampler/128/circle-close-128.png"></button>
+				<button class="sb"><img src="https://cdn.onlinewebfonts.com/svg/img_412726.png"></button>
+				<button class="mb"><img src="https://images-eu.ssl-images-amazon.com/images/I/51a1NKExrxL.png"></button>
+				<button class="tb"><img src="http://www.pngmart.com/files/5/Anarchy-PNG-Image-1.png"></button>
+				<input type="file" id="music_in" style="display: none">
+			</div>
+			<div style="position:absolute;right:10px;top:10px">
+				<span id="name_container" class="connect"></span>
+				<button type="button" name="logout" class="connect">Log out</button>
+				<button type="button" name="show_login" class="connect">Log in</button>
+				<button type="button" name="show_signup" class="connect">Sign up</button>
+			</div>
+			<button type='button' name='show_me' class="show_me">Who am i?</button>
+			<div id="me_container">
+			</div>
+			<button type="button" name="change_me" class="change_me">Change me</button><input type="text" name="change_val" id="change_val">
+			<button type="button" name="change_attr" class="apply">Apply</button>
+			<span class="change_row"><button name="Cfirstname">Name</button><button name="Clastname">Surname</button><button name="Ce-mail">E-mail</button><button name="Cpassword">Password</button><button name="Curl">Photo</button></span>
+			<div id="container" class="containers c2">
+			</div>
+			<button type="button" name="change_him" class="change_me him">Change him</button><input type="text" name="change_Hval" id="change_Hval">
+			<span class="change_row h"><button name="Chfirstname">Name</button><button name="Chlastname">Surname</button><button name="Chrole">Role</button></span>
+			<button type="button" name="change_attr" class="apply h">Apply</button>
+			<div id="table_cont">
+			</div>
+			<div class="form sign" id="sign_up_form">
+				<div>
+					Login<br><input type="text" name="login" id="s_login"/><br>
+					Password<br><input type="password" name="password" id="s_password"/><br>
+					First Name<br><input type="text" name="fname" id="s_fname"/><br>
+					Last Name<br><input type="text" name="lname" id="s_lname"/><br>
+					E-maile<br><input type="text" name="e-mail" id="s_e-mail"/><br>
+					Image<br><input type="text" name="image" id="img"/><br>
+					<img alt="image" src="" id="image" onerror="this.onerror=null;this.src='https://orig00.deviantart.net/2c0f/f/2012/343/c/4/lumpy_space_princess_2_by_doublehit-d5nkdhm.gif';"><br>
+					<div class="button_block">
+						<button type="button" onclick="setSrc()">Check img</button><br>
+						<button type="button" name="submit" class="sign_up">Sign up</button>
+					</div>
+				</div>
+			</div>
+			<input type="file" id="file_tr" style="display: none" accept=".jpg, .jpeg, .png">
+			<button id="button_tr">L</button>
+			<div id="login_form" class="form login">
+				<div>
+					Login<br><input type="text" name="login" id="l_login"/><br>
+					Password<br><input type="password" name="password" id="l_password"/><br>
+					<button type="submit" class="log_in">Log In</button>
+				</div>
+			</div>
 		</div>
-        <div style="position:absolute;right:10px;top:10px">
-            <span id="name_container" class="connect"></span>
-            <button type="button" name="logout" class="connect">Log out</button>
-            <button type="button" name="show_login" class="connect">Log in</button>
-            <button type="button" name="show_signup" class="connect">Sign up</button>
-        </div>
-        <button type='button' name='show_me' class="show_me">Who am i?</button>
-        <div id="me_container">
-        </div>
-        <button type="button" name="change_me" class="change_me">Change me</button><input type="text" name="change_val" id="change_val">
-        <button type="button" name="change_attr" class="apply">Apply</button>
-        <span class="change_row"><button name="Cfirstname">Name</button><button name="Clastname">Surname</button><button name="Ce-mail">E-mail</button><button name="Cpassword">Password</button><button name="Curl">Photo</button></span>
-        <div id="container" class="containers c2">
-        </div>
-        <button type="button" name="change_him" class="change_me him">Change him</button><input type="text" name="change_Hval" id="change_Hval">
-        <span class="change_row h"><button name="Chfirstname">Name</button><button name="Chlastname">Surname</button><button name="Chrole">Role</button></span>
-        <button type="button" name="change_attr" class="apply h">Apply</button>
-        <div id="table_cont">
-        </div>
-        <div class="form sign" id="sign_up_form">
-			<div>
-                Login<br><input type="text" name="login" id="s_login"/><br>
-                Password<br><input type="password" name="password" id="s_password"/><br>
-                First Name<br><input type="text" name="fname" id="s_fname"/><br>
-                Last Name<br><input type="text" name="lname" id="s_lname"/><br>
-                E-maile<br><input type="text" name="e-mail" id="s_e-mail"/><br>
-                Image<br><input type="text" name="image" id="img"/><br>
-                <img alt="image" src="" id="image" onerror="this.onerror=null;this.src='https://orig00.deviantart.net/2c0f/f/2012/343/c/4/lumpy_space_princess_2_by_doublehit-d5nkdhm.gif';"><br>
-                <div class="button_block">
-                    <button type="button" onclick="setSrc()">Check img</button><br>
-                    <button type="button" name="submit" class="sign_up">Sign up</button>
-                </div>
-			</div>
-        </div>
-		<input type="file" id="file_tr" style="display: none" accept=".jpg, .jpeg, .png">
-		<button id="button_tr">L</button>
-		<div id="login_form" class="form login">
-            <div>
-                Login<br><input type="text" name="login" id="l_login"/><br>
-                Password<br><input type="password" name="password" id="l_password"/><br>
-                <button type="submit" class="log_in">Log In</button>
-            </div>
-        </div>
     </body>
 </html>

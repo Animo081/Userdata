@@ -242,11 +242,7 @@ $(document).ready(function(){
     
 	$("#file_tr").change(function(){
 		readURL(this);
-	});
-	
-	
-//3 LABA
-	
+	});	
 	
 	$("#music_enable").on("click",function(){
 		if (music_enable){
@@ -279,6 +275,8 @@ $(document).ready(function(){
 	$(document).on("click",".play.me",function(e){
 		vid_id = user_id;
 		$.post("php/take_media.php",{id:user_id,type:"video"},function(data){
+			$(".show_v").show();
+			$(".no_v").hide();
 			if (data == "not found")
 				$(".video_input").show();
 			else
@@ -297,17 +295,22 @@ $(document).ready(function(){
 	$(document).on("click",".play.him",function(e){
 		vid_id = row_id;
 		$.post("php/take_media.php",{id:row_id,type:"video"},function(data){
-			if (data == "not found")
+			$(".show_v").hide();
+			if (data == "not found"){
 				$(".video_input").show();
+				$(".no_v").show();
+			}
 			else
 				if (data.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/)){
 					document.getElementById("yid").src = data;
 					$("#yid").css("display","block");
 					$(".video_input").show();
+					$(".no_v").hide();
 				}else{
 					document.getElementById("vid").src = data;
 					$("#vid").css("display","block");
 					$(".video_input").show();
+					$(".no_v").hide();
 				}
 		});
 	});
@@ -324,7 +327,7 @@ $(document).ready(function(){
 	
 	$("button.sb").on("click",function(){
 		if ($('#yid').css("display") == "block")
-			$.post("php/set_media.php",{id:vid_id,url:document.getElementById("yid").src,type:"video"});
+			$.post("php/set_youtube.php",{id:vid_id,url:document.getElementById("yid").src,type:"video"});
 		else
 			if ($('#vid').css("display") == "block"){
 				vidosik.append("id",vid_id);
@@ -405,8 +408,363 @@ $(document).ready(function(){
       			video.pause();
   		}
 	});
-		
+	
+// Laba 4
+	
+	$("button.tb").on("click",function(){
+		$(".all").toggle("slow",function(){
+			$(".canvas").show();
+			initial();
+		});
+
+	})
+	
+	/*$(window).on("mousemove",function(e){
+		mouse.x = e.x;
+		mouse.y = e.y;
+	})*/
+	
+	/*var mouse = {
+		x: undefined,
+		y: undefined
+	}*/
+	
+	window.canvas = document.querySelector("canvas");
+	canvas.width = innerWidth;
+	canvas.height = innerHeight;
+	window.c = canvas.getContext("2d");
+	
 })
+
+function Triangle(x1,y1,x2,y2,x3,y3){
+	
+	this.start_x1 = x1;
+	var start_x2 = x2;
+	var start_x3 = x3;
+	var start_y1 = y1;
+	var start_y2 = y2;
+	var start_y3 = y3;
+	
+	this.x1 = x1;
+	this.x2 = x2;
+	this.x3 = x3;
+	this.y1 = y1;
+	this.y2 = y2;
+	this.y3 = y3;
+	var fp = Math.floor(Math.random() * (80 - 0) + 0);
+	var sp = Math.floor(Math.random() * (10 - 0) + 0);
+	var dx = 2;
+	var dy = 2;
+	this.dicrease = false;
+	this.deletable = false;
+	this.done = false;
+	
+	this.draw = function(){
+		
+		c.beginPath();
+		c.moveTo(this.x1,this.y1);
+		c.lineTo(this.x2,this.y2);
+		c.lineTo(this.x3,this.y3);
+		c.closePath();
+		c.fillStyle = "hsl(300, "+fp+"%, "+sp+"%)";
+		c.fill();
+		c.stroke();
+			
+	};
+	
+	this.init = function(){
+		if (Math.abs(this.start_x1 - this.x1) <= 30 && this.dicrease == false){
+			this.x1 -=dx;
+			this.x2 +=dx;
+			
+			if (this.y3 > this.y2){
+				this.y1 -=dy;
+				this.y2 -=dy;
+				this.y3 += dy;
+			}
+			else{
+				this.y1 +=dy;
+				this.y2 +=dy;
+				this.y3 -= dy;
+			}
+		}else{
+			this.dicrease = true;
+			if (this.start_x1 != this.x1){
+				this.x1 +=dx;
+				this.x2 -=dx;
+				if (this.y3 > this.y2){
+					this.y1 +=dy;
+					this.y2 +=dy;
+					this.y3 -= dy;
+				}
+				else{
+					this.y1 -=dy;
+					this.y2 -=dy;
+					this.y3 += dy;
+				}
+			}			
+		}
+		
+		this.draw();
+	}
+	
+	this.del = function(){
+		if (this.x1 < this.x3){
+			this.x1 +=0.7;
+			this.x2 -=0.7;
+			if (this.y3 > this.y2){
+				this.y1 +=0.7;
+				this.y2 +=0.7;
+				this.y3 -= 0.7;
+			}else{
+				this.y1 -=0.7;
+				this.y2 -=0.7;
+				this.y3 += 0.7;
+			}
+		}else
+			this.deletable = true;
+		this.draw();
+	}
+	
+	this.update = function(){
+		this.draw();
+	}
+}
+
+function initial(){
+	window.TrArray1 = [];
+	window.TrArray2 = [];
+	window.TrArray3 = [];
+	window.done = false;
+	var inc =14;
+	var last = 30;
+	var height = 25;
+	var convergence = 119;
+	sp2 = innerWidth/2 - inc*2 - inc*last + convergence;
+	sp1 = innerWidth/2 - convergence;
+	var xMin = 540;
+	var xMax = 1000;
+	var yMin = 120;
+	var yMax = 750;
+	var j = 0;
+	window.k = 0;
+	setTimeout(loop1,300,inc,last,height,convergence,sp2,sp1,xMin,xMax,yMin,yMax,j,1)
+	j = 0;
+	setTimeout(loop2,700,inc,last,height,convergence,sp2,sp1,xMin,xMax,yMin,yMax,j,1)
+	j = 0;
+	setTimeout(loop3,1100,inc,last*2+10,height,convergence,sp2,sp1,xMin,xMax,yMin,yMax,j,1)
+	j = 0;
+	setTimeout(splicer,300,j,xMin,xMax,yMin,yMax);
+	animate()
+};
+
+function animate(){
+	requestAnimationFrame(animate);
+	c.clearRect(0,0,innerWidth,innerHeight);
+	if (k >= 3){
+		for (var i=0;i<TrArray1.length;i++){
+			TrArray1[i].update();
+		}
+		for (var i=0;i<TrArray2.length;i++){
+			TrArray2[i].update();
+		}
+		for (var i=0;i<TrArray3.length;i++){
+			TrArray3[i].update();
+		}
+	}
+	else{
+		for (var i=0;i<TrArray1.length;i++){
+			TrArray1[i].init();
+		}
+		for (var i=0;i<TrArray2.length;i++){
+			TrArray2[i].init();
+		}
+		for (var i=0;i<TrArray3.length;i++){
+			TrArray3[i].init();
+		}
+	}
+};
+
+function loop1(inc,last,height,convergence,sp2,sp1,xMin,xMax,yMin,yMax,j,stage){
+	if (stage == 1){
+		var triangle = new Triangle(sp1+inc*j,0+height*j,sp1+inc*2+inc*j,0+height*j,sp1+inc+inc*j,height+height*j);
+		triangle.init();
+		TrArray1.push(triangle);
+		stage++;
+	}
+	else{
+		var triangle = new Triangle(sp1+inc+inc*j,height+height*j,sp1+inc*3+inc*j,height+height*j,sp1+inc*2+inc*j,0+height*j);
+		triangle.init();
+		TrArray1.push(triangle);
+		stage--;
+		j++;
+	}
+	if (j < last)
+		setTimeout(loop1,75,inc,last,height,convergence,sp2,sp1,xMin,xMax,yMin,yMax,j,stage);
+	else
+		k++;
+};
+
+function loop2(inc,last,height,convergence,sp2,sp1,xMin,xMax,yMin,yMax,j,stage){
+	if (stage == 1){
+		var triangle = new Triangle(sp2+inc*j,height*last-height*j,sp2+inc*2+inc*j,height*last-height*j,sp2+inc+inc*j,height*(last-1)-height*j);
+		triangle.init();
+		TrArray2.push(triangle);
+		stage++;
+	}else{
+		var triangle = new Triangle(sp2+inc+inc*j,height*(last-1)-height*j,sp2+inc*3+inc*j,height*(last-1)-height*j,sp2+inc*2+inc*j,height*last-height*j);
+		triangle.init();
+		TrArray2.push(triangle);
+		stage--;
+		j++;
+	}
+	if (j < last)
+		setTimeout(loop2,75,inc,last,height,convergence,sp2,sp1,xMin,xMax,yMin,yMax,j,stage);
+	else
+		k++;
+};
+
+function loop3(inc,last,height,convergence,sp2,sp1,xMin,xMax,yMin,yMax,j,stage){
+	if (stage == 1){
+		var triangle = new Triangle(-30+inc*2*j,innerHeight/2-height/2+60,-30+inc*2+inc*2*j,innerHeight/2-height/2+60,-30+inc+inc*2*j,innerHeight/2+height/2+60);
+		triangle.init();
+		TrArray3.push(triangle);
+		stage++;
+	}else{
+		var triangle = new Triangle(-30+inc+inc*2*j,innerHeight/2+height/2+60,-30+inc*3+inc*2*j,innerHeight/2+height/2+60,-30+inc*2+inc*2*j,innerHeight/2-height/2+60);
+		triangle.init();
+		TrArray3.push(triangle);
+		stage--;
+		j++;
+	}
+	if (j < last)
+		setTimeout(loop3,40,inc,last,height,convergence,sp2,sp1,xMin,xMax,yMin,yMax,j,stage);
+	else
+		k++
+};
+
+function splicer(j,xMin,xMax,yMin,yMax){
+	if (k == 3)
+		setTimeout(deleteC,20,xMin,xMax,yMin,yMax);
+	else
+		setTimeout(splicer,300,j,xMin,xMax,yMin,yMax);
+};
+
+function deleteC(xMin,xMax,yMin,yMax){
+	var l = TrArray1.length;
+	for (var i=0;i<TrArray1.length;i++)
+		if (TrArray1[i].x1 < xMin || TrArray1[i].x3 > xMax || TrArray1[i].y1 < yMin || TrArray1[i].y3 > yMax){
+			TrArray1[i].del();
+			if (TrArray1[i].deletable){
+				TrArray1.splice(i,1);
+				i--;
+				if (k == 3)
+					k++;
+			}
+		}
+	for (var i=0;i<TrArray2.length;i++)
+		if (TrArray2[i].x1 < xMin || TrArray2[i].x3 > xMax || TrArray2[i].y1 < yMin || TrArray2[i].y3 > yMax){
+			TrArray2[i].del();
+			if (TrArray2[i].deletable){
+				TrArray2.splice(i,1);
+				i--;
+				if (k == 4)
+					k++;
+			}
+		}
+	for (var i=0;i<TrArray3.length;i++)
+		if (TrArray3[i].x1 < xMin || TrArray3[i].x3 > xMax || TrArray3[i].y1 < yMin || TrArray3[i].y3 > yMax){
+			TrArray3[i].del();
+			if (TrArray3[i].deletable){
+				TrArray3.splice(i,1);
+				i--;
+				if (k == 5)
+					k++;
+			}
+		}
+	if (k != 6){
+		setTimeout(deleteC,20,xMin,xMax,yMin,yMax);
+	}else{
+		for (var i=0;i<TrArray1.length;i++){
+			if (TrArray1[i].x1 < xMin || TrArray1[i].x3 > xMax || TrArray1[i].y1 < yMin || TrArray1[i].y3 > yMax){
+				TrArray1.splice(i,1);
+				i--;
+			}
+		}
+		for (var i=0;i<TrArray2.length;i++){
+			if (TrArray2[i].x1 < xMin || TrArray2[i].x3 > xMax || TrArray2[i].y1 < yMin || TrArray2[i].y3 > yMax){
+				TrArray2.splice(i,1);
+				i--;
+			}
+		}
+		for (var i=0;i<TrArray3.length;i++){
+			if (TrArray3[i].x1 < xMin || TrArray3[i].x3 > xMax || TrArray3[i].y1 < yMin || TrArray3[i].y3 > yMax){
+				TrArray3.splice(i,1);
+				i--;
+			}
+		}
+		setTimeout(soBeauty,10);
+	}
+}
+
+function soBeauty(){
+	if (done == false)
+		var choise = 1;	//Math.floor(Math.random() * 3 + 1);
+		switch(choise){
+			case 1:
+				for (var i=0;i<TrArray1.length;i++)
+					TrArray1[i].dicrease = false;
+				var point = 1;
+				done = true;
+				setTimeout(drawB,20,point);
+				break;
+			case 2:
+				for (var i=0;i<TrArray2.length;i++)
+					TrArray2[i].dicrease = false;
+				var point = 2;
+				done = true;
+				setTimeout(drawB,20,point);
+				break;
+			case 3:
+				for (var i=0;i<TrArray3.length;i++)
+					TrArray3[i].dicrease = false;
+				var point = 3;
+				done = true;
+				setTimeout(drawB,20,point);
+				break;
+		}
+	setTimeout(soBeauty,30);
+}
+
+function drawB(point){
+	switch(point){
+		case 1:
+			for (var i=0;i<TrArray1.length;i++){
+				TrArray1[i].init();
+				if (TrArray1[i].start_x1 == TrArray1[i].x1)
+					done = false;
+			}
+			break;
+		case 2:
+			for (var i=0;i<TrArray2.length;i++){
+				TrArray2[i].init();
+				if (TrArray2[i].done == true)
+					done = false;
+			}
+			break;
+		case 3:
+			for (var i=0;i<TrArray3.length;i++){
+				TrArray3[i].init();
+				if (TrArray3[i].done == true)
+					done = false;
+			}
+			break;
+	}
+	if (done == true)
+		setTimeout(drawB,20,point);
+}
+
+// Laba 4
 
 function readURLm(input){
 	if (input.files && input.files[0]) {
@@ -445,8 +803,6 @@ function readURLv(input){
         reader.readAsDataURL(input.files[0]);
     }
 }
-
-//3 LABA
 
 function logout(){
     $.post("php/logout.php");
@@ -494,7 +850,7 @@ function getData(){
             user_id = result.id;
             role = result.role;
 			$.post("php/take_media.php",{id:user_id,type:"audio"},function(data){
-				if (data != "not found" && document.getElementById("player").src != data){
+				if (data != "not found" && document.getElementById("player").src != data){	
 					document.getElementById("player").src = data;
 				}
 			})

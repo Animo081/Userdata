@@ -30,8 +30,6 @@ if (!mysqli_num_rows($result)){
 	$conn->query($query);
 }
 
-echo $_POST['type'];
-
 CloseCon($conn);
 
 ?>

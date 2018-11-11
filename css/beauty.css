@@ -399,6 +399,16 @@ input[name="change_Hval"]{
 	width: 100px;
 }
 
+.video_input button.tb{
+	position: absolute;
+	left: 20px;
+	top:320px;
+	background-color: transparent;
+	border: none;
+	height: 100px;
+	width: 100px;
+}
+
 .video_input button img{
 	background-color: transparent;
 	max-height: 70px;
@@ -466,3 +476,12 @@ input[name="change_Hval"]{
 	background-color: transparent;	
 }
 
+
+
+
+
+.canvas{
+	position: fixed;
+
+	border: 3px solid black;
+}
