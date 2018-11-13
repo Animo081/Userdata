@@ -413,10 +413,25 @@ $(document).ready(function(){
 	
 	$("button.tb").on("click",function(){
 		$(".all").toggle("slow",function(){
+			cancel_pls = false;
 			$(".canvas").show();
-			initial();
+			$("#Coptions").show();
+			$("datalist").show();
+			$("#hide_canv").show();
+			if (initialized == false)
+				initial()
 		});
 
+	})
+	
+	window.cancel_pls = false;
+	$("#hide_canv").on("click",function(){
+		cancel_pls = true;
+		$(".canvas").hide();
+		$("#Coptions").hide();
+		$("datalist").hide();
+		$("#hide_canv").hide();
+		$(".all").toggle("slow");
 	})
 	
 	/*$(window).on("mousemove",function(e){
@@ -433,8 +448,71 @@ $(document).ready(function(){
 	canvas.width = innerWidth;
 	canvas.height = innerHeight;
 	window.c = canvas.getContext("2d");
+	window.initialized = false;
+	$(window).resize(function(){
+		canvas.width = innerWidth;
+		canvas.height = innerHeight;
+	})
+	
+	window.main_color = "300";
+	$("#color_picker").on("change",function(){
+		var color = document.getElementById('color_picker').value;
+		main_color = toHsl(color);
+	})
+	
+	window.fastAsFuck = 0;
+	$("#speed").on("change",function(){
+		switch(document.getElementById('speed').value){
+			case "1": fastAsFuck = -25; break;
+			case "2": fastAsFuck = 0; break;
+			case "3": fastAsFuck = 25; break;
+		}
+	})
+	
+	window.figure = "circle";
+	$("#make_triangle").on("click",function(){
+		figure = "triangle"
+	});
+	
+	$("#make_circle").on("click",function(){
+		figure = "circle"
+	});
 	
 })
+
+function toHsl(hex) {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+
+    var r = parseInt(result[1], 16);
+    var g = parseInt(result[2], 16);
+    var b = parseInt(result[3], 16);
+
+    r /= 255, g /= 255, b /= 255;
+    var max = Math.max(r, g, b), min = Math.min(r, g, b);
+    var h, s, l = (max + min) / 2;
+
+    if(max == min){
+        h = s = 0; // achromatic
+    } else {
+        var d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        switch(max) {
+            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+            case g: h = (b - r) / d + 2; break;
+            case b: h = (r - g) / d + 4; break;
+        }
+        h /= 6;
+    }
+
+    s = s*100;
+	s = Math.round(s);
+	l = l*100;
+	l = Math.round(l);
+	h = Math.round(360*h);
+
+	var colorInHSL = h;
+	return colorInHSL;
+}
 
 function Triangle(x1,y1,x2,y2,x3,y3){
 	
@@ -451,8 +529,8 @@ function Triangle(x1,y1,x2,y2,x3,y3){
 	this.y1 = y1;
 	this.y2 = y2;
 	this.y3 = y3;
-	var fp = Math.floor(Math.random() * (80 - 0) + 0);
-	var sp = Math.floor(Math.random() * (10 - 0) + 0);
+	var fp = Math.floor(Math.random() * (80 - 20) + 20);
+	var sp = Math.floor(Math.random() * (15 - 5) + 5);
 	var dx = 2;
 	var dy = 2;
 	this.dicrease = false;
@@ -466,7 +544,7 @@ function Triangle(x1,y1,x2,y2,x3,y3){
 		c.lineTo(this.x2,this.y2);
 		c.lineTo(this.x3,this.y3);
 		c.closePath();
-		c.fillStyle = "hsl(300, "+fp+"%, "+sp+"%)";
+		c.fillStyle = "hsl(" + main_color + ", "+fp+"%, "+sp+"%)";
 		c.fill();
 		c.stroke();
 			
@@ -502,9 +580,9 @@ function Triangle(x1,y1,x2,y2,x3,y3){
 					this.y2 -=dy;
 					this.y3 += dy;
 				}
-			}			
+			}else
+				this.done = true;
 		}
-		
 		this.draw();
 	}
 	
@@ -531,10 +609,47 @@ function Triangle(x1,y1,x2,y2,x3,y3){
 	}
 }
 
+function Circle(x,y,radius){
+	this.x = x;
+	this.y = y;
+	this.radius = radius;
+	var fp = Math.floor(Math.random() * (80 - 20) + 20);
+	var sp = Math.floor(Math.random() * (15 - 5) + 5);
+	this.radians = Math.random() * Math.PI * 2;
+	this.velocity = 0.05;
+	this.distanceFromCenter = Math.floor(Math.random() * (350 - 250) + 250);
+	
+	this.update = function(){
+		this.radians += this.velocity + fastAsFuck/1000;
+		this.x = x + Math.cos(this.radians) * this.distanceFromCenter;
+		this.y = y + Math.sin(this.radians) * this.distanceFromCenter;			
+		this.draw();
+	}
+	
+	this.draw = function(){
+		c.beginPath();
+		if (figure == "circle"){
+			c.arc(this.x,this.y,this.radius,0,Math.PI * 2,false)
+		}else{
+			c.moveTo(this.x-radius,this.y+radius);
+			c.lineTo(this.x+radius,this.y+radius);
+			c.lineTo(this.x,this.y-radius);
+
+		}
+		c.fillStyle = "hsl(" + main_color + ", "+fp+"%, "+sp+"%)";
+		c.fill();
+		c.closePath();
+	}
+}
+
 function initial(){
 	window.TrArray1 = [];
 	window.TrArray2 = [];
 	window.TrArray3 = [];
+	window.circles = [];
+	for (var i=0;i<70;i++){
+		circles.push(new Circle(canvas.width/2,canvas.height/2,5));	
+	}
 	window.done = false;
 	var inc =14;
 	var last = 30;
@@ -555,32 +670,42 @@ function initial(){
 	setTimeout(loop3,1100,inc,last*2+10,height,convergence,sp2,sp1,xMin,xMax,yMin,yMax,j,1)
 	j = 0;
 	setTimeout(splicer,300,j,xMin,xMax,yMin,yMax);
+	initialized = true;
 	animate()
 };
 
 function animate(){
-	requestAnimationFrame(animate);
-	c.clearRect(0,0,innerWidth,innerHeight);
-	if (k >= 3){
-		for (var i=0;i<TrArray1.length;i++){
-			TrArray1[i].update();
+	var myReq = requestAnimationFrame(animate);
+	if (cancel_pls == true){
+		c.clearRect(0,0,innerWidth,innerHeight);
+		//cancelAnimationFrame(myReq);
+	}else{
+		//c.clearRect(0,0,innerWidth,innerHeight);
+		c.fillStyle = "rgba(255,255,255,.04)"
+		c.fillRect(0,0,innerWidth,innerHeight);
+		if (k >= 3){
+			for (var i=0;i<TrArray1.length;i++){
+				TrArray1[i].update();
+			}
+			for (var i=0;i<TrArray2.length;i++){
+				TrArray2[i].update();
+			}
+			for (var i=0;i<TrArray3.length;i++){
+				TrArray3[i].update();
+			}
+			for (var i=1;i<circles.length;i++)
+				circles[i].update();
 		}
-		for (var i=0;i<TrArray2.length;i++){
-			TrArray2[i].update();
-		}
-		for (var i=0;i<TrArray3.length;i++){
-			TrArray3[i].update();
-		}
-	}
-	else{
-		for (var i=0;i<TrArray1.length;i++){
-			TrArray1[i].init();
-		}
-		for (var i=0;i<TrArray2.length;i++){
-			TrArray2[i].init();
-		}
-		for (var i=0;i<TrArray3.length;i++){
-			TrArray3[i].init();
+		else{
+			for (var i=0;i<TrArray1.length;i++){
+				TrArray1[i].init();
+			}
+			for (var i=0;i<TrArray2.length;i++){
+				TrArray2[i].init();
+			}
+			for (var i=0;i<TrArray3.length;i++){
+				TrArray3[i].init();
+			}
 		}
 	}
 };
@@ -600,7 +725,7 @@ function loop1(inc,last,height,convergence,sp2,sp1,xMin,xMax,yMin,yMax,j,stage){
 		j++;
 	}
 	if (j < last)
-		setTimeout(loop1,75,inc,last,height,convergence,sp2,sp1,xMin,xMax,yMin,yMax,j,stage);
+		setTimeout(loop1,60,inc,last,height,convergence,sp2,sp1,xMin,xMax,yMin,yMax,j,stage);
 	else
 		k++;
 };
@@ -619,7 +744,7 @@ function loop2(inc,last,height,convergence,sp2,sp1,xMin,xMax,yMin,yMax,j,stage){
 		j++;
 	}
 	if (j < last)
-		setTimeout(loop2,75,inc,last,height,convergence,sp2,sp1,xMin,xMax,yMin,yMax,j,stage);
+		setTimeout(loop2,60,inc,last,height,convergence,sp2,sp1,xMin,xMax,yMin,yMax,j,stage);
 	else
 		k++;
 };
@@ -638,7 +763,7 @@ function loop3(inc,last,height,convergence,sp2,sp1,xMin,xMax,yMin,yMax,j,stage){
 		j++;
 	}
 	if (j < last)
-		setTimeout(loop3,40,inc,last,height,convergence,sp2,sp1,xMin,xMax,yMin,yMax,j,stage);
+		setTimeout(loop3,30,inc,last,height,convergence,sp2,sp1,xMin,xMax,yMin,yMax,j,stage);
 	else
 		k++
 };
@@ -703,65 +828,7 @@ function deleteC(xMin,xMax,yMin,yMax){
 				i--;
 			}
 		}
-		setTimeout(soBeauty,10);
 	}
-}
-
-function soBeauty(){
-	if (done == false)
-		var choise = 1;	//Math.floor(Math.random() * 3 + 1);
-		switch(choise){
-			case 1:
-				for (var i=0;i<TrArray1.length;i++)
-					TrArray1[i].dicrease = false;
-				var point = 1;
-				done = true;
-				setTimeout(drawB,20,point);
-				break;
-			case 2:
-				for (var i=0;i<TrArray2.length;i++)
-					TrArray2[i].dicrease = false;
-				var point = 2;
-				done = true;
-				setTimeout(drawB,20,point);
-				break;
-			case 3:
-				for (var i=0;i<TrArray3.length;i++)
-					TrArray3[i].dicrease = false;
-				var point = 3;
-				done = true;
-				setTimeout(drawB,20,point);
-				break;
-		}
-	setTimeout(soBeauty,30);
-}
-
-function drawB(point){
-	switch(point){
-		case 1:
-			for (var i=0;i<TrArray1.length;i++){
-				TrArray1[i].init();
-				if (TrArray1[i].start_x1 == TrArray1[i].x1)
-					done = false;
-			}
-			break;
-		case 2:
-			for (var i=0;i<TrArray2.length;i++){
-				TrArray2[i].init();
-				if (TrArray2[i].done == true)
-					done = false;
-			}
-			break;
-		case 3:
-			for (var i=0;i<TrArray3.length;i++){
-				TrArray3[i].init();
-				if (TrArray3[i].done == true)
-					done = false;
-			}
-			break;
-	}
-	if (done == true)
-		setTimeout(drawB,20,point);
 }
 
 // Laba 4

@@ -14,6 +14,18 @@
     
     <body class="bg">
 		<canvas class="canvas" style="display: none"></canvas>
+		<button id="hide_canv" style="display: none"><img src="https://cdn3.iconfinder.com/data/icons/sympletts-free-sampler/128/circle-close-128.png"></button>
+		<div id="Coptions" style="display: none">
+			<input type="color" id="color_picker">
+			<input type="range" id="speed" list="speed_list" min="1" max="3" step="1">
+			<datalist id="speed_list">
+				<option value="slow" label="slow">
+				<option value="medium" label="medium">
+				<option value="fast" label="fast">
+			</datalist>
+			<button id="make_circle"><img src="https://mbtskoudsalg.com/images/brush-stroke-circle-png-2.png"></button>			
+			<button id="make_triangle"><img src="http://www.pngmart.com/files/4/Triangle-PNG-Image.png"></button>
+		</div>
 		<div class="all">
 			<button id="music_enable"><img id="mute" src="https://png.icons8.com/ios/2x/speaker.png"></button>
 			<audio controls loop src="" id="player" style="display: none"></audio>

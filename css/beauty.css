@@ -482,6 +482,70 @@ input[name="change_Hval"]{
 
 .canvas{
 	position: fixed;
+	border: none;
+}
 
-	border: 3px solid black;
+#hide_canv{
+	float: right;
+	right: 15px;
+	height: 80px;
+	width: 80px;
+	position: fixed;
+	background-color: transparent;
+	border: none;
+}
+
+#hide_canv img{
+	height: 80px;
+	width: 80px;
+}
+
+#Coptions{
+	position: absolute;
+	background-color: hsl(300,50%,10%);
+}
+
+#Coptions button{
+	position: absolute;
+	height: 66px;
+	width: 66px;
+	background-color: transparent;
+	border: none;
+}
+
+#Coptions img{
+	width: 80px;
+	height: 80px;
+}
+
+#make_triangle{
+	top: 100px;
+	left: 90px;
+}
+
+#make_circle{
+	top:10px;
+	left: 90px;
+}
+
+#color_picker{
+	position: absolute;
+	width: 66px;
+	height: 25px;
+	margin: 10px;
+	border: none;
+}
+
+#speed{
+	position: absolute;
+	transform: rotate(-90deg);
+	margin-top: 100px;
+	margin-left: 15px;
+}
+
+datalist{
+	position: absolute;
+	margin-top: 41px;
+	margin-left: 10px;
+	line-height: 3;
 }
