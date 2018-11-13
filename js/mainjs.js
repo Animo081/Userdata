@@ -110,7 +110,7 @@ $(document).ready(function(){
         value = setChange();
         if (Cchange[0] == "C")
             Cchange = Cchange.substr(1,Cchange.length);
-        $.post("php/change.php",{field:Cchange,value:value},function(){
+        $.post("/user/selfediting",{field:Cchange,value:value},function(){
             getData();
             getTable(); 
         });
@@ -130,10 +130,10 @@ $(document).ready(function(){
         value = setHChange();
         if (Chchange[0] == "C" && Chchange[1] == "h")
             Chchange = Chchange.substr(2,Chchange.length);
-        $.post("php/change_h.php",{field:Chchange,value:value,id:row_id},function(){
+        $.post("/table/edit",{field:Chchange,value:value,id:row_id},function(e){
             getData();
             getTable();
-            $.post("php/show_user.php",{id:row_id},function(data){
+            $.post("/table/reveal",{id:row_id},function(data){
                     var result = $.parseJSON(data);
                     $("#container").html("<img style='float:right;padding:20px' alt='image' src='" + result.url + "'>ID: " + result.id + "<br>Login: " + result.login + "<br>First Name: " + result.fname + "<br>Last Name: " + result.lname + "<br>Role: " + result.role);
             });
@@ -158,7 +158,8 @@ $(document).ready(function(){
             $("button[class='apply h']").hide();
 			$(".play.him").hide();
         }
-        $.post("php/delete.php",{id:$(this).attr('name')},function(){
+        $.post("/table/delete",{id:$(this).attr('name')},function(e){
+			alert(e);
             if (parseInt(this_name) == user_id){
                 $('#me_container').hide();
                 logout();
@@ -174,7 +175,7 @@ $(document).ready(function(){
         if (e.target.getAttribute('src') != "http://s1.iconbird.com/ico/2013/12/505/w450h4001385925290Delete.png"){
             var id = $(this).attr('id');
             if (row_id != id){
-                $.post("php/show_user.php",{id:id},function(data){
+                $.post("/table/reveal",{id:id},function(data){
                     var result = $.parseJSON(data);
                     $("#container").show();
 					hidden = false;
@@ -212,11 +213,14 @@ $(document).ready(function(){
 		var e_mail = document.getElementById("s_e-mail").value;
 		var image = document.getElementById("img").value;
         $.ajax({
-            url:'php/sign_up.php',
+            url: '/user/signup',
             type:"POST",
             data: {login:login,password:password,fname:fname,lname:lname,e_mail:e_mail,image:image}
-        }).done(function(){
-			 window.location = window.location.href;
+        }).done(function(e){
+			if (e === "")
+				window.location = window.location.href;
+			else
+				alert(e);
 		});
     });
     
@@ -224,11 +228,14 @@ $(document).ready(function(){
 		var login = document.getElementById("l_login").value;
 		var password = document.getElementById("l_password").value;
         $.ajax({
-            url:'php/login.php',
+            url:'/user/login',
             type:"POST",
 			data: {login:login,password:password}
-		}).done(function(){
-			window.location = window.location.href;
+		}).done(function(e){
+			if (e === "")
+				window.location = window.location.href;
+			else
+				alert(e);
 		});
     });
     
@@ -274,7 +281,7 @@ $(document).ready(function(){
 	
 	$(document).on("click",".play.me",function(e){
 		vid_id = user_id;
-		$.post("php/take_media.php",{id:user_id,type:"video"},function(data){
+		$.post("/media/getMedia",{id:user_id,type:"video"},function(data){
 			$(".show_v").show();
 			$(".no_v").hide();
 			if (data == "not found")
@@ -294,7 +301,7 @@ $(document).ready(function(){
 		
 	$(document).on("click",".play.him",function(e){
 		vid_id = row_id;
-		$.post("php/take_media.php",{id:row_id,type:"video"},function(data){
+		$.post("/media/getMedia",{id:row_id,type:"video"},function(data){
 			$(".show_v").hide();
 			if (data == "not found"){
 				$(".video_input").show();
@@ -327,19 +334,19 @@ $(document).ready(function(){
 	
 	$("button.sb").on("click",function(){
 		if ($('#yid').css("display") == "block")
-			$.post("php/set_youtube.php",{id:vid_id,url:document.getElementById("yid").src,type:"video"});
+			$.post("/media/setYoutube",{id:vid_id,url:document.getElementById("yid").src,type:"video"});
 		else
 			if ($('#vid').css("display") == "block"){
 				vidosik.append("id",vid_id);
 				vidosik.append("type","video");
 				$.ajax({
-					url:"php/set_media.php",
+					url:"/media/setLocal",
 					type:"POST",
 					data:vidosik,
 					processData:false,
 					contentType:false,
 					success:function(){
-						$.post("php/take_media.php",{id:vid_id,type:"video"},function(data){
+						$.post("/media/getMedia",{id:vid_id,type:"video"},function(data){
 							document.getElementById("vid").src = data;
 						});
 					}
@@ -840,7 +847,7 @@ function readURLm(input){
 		muzika.append("id",user_id);
 		muzika.append("type","audio");
 		$.ajax({
-			url:"php/set_media.php",
+			url:"/media/setLocal",
 			type:"POST",
 			data:muzika,
 			processData:false,
@@ -872,7 +879,7 @@ function readURLv(input){
 }
 
 function logout(){
-    $.post("php/logout.php");
+    $.post("/user/logout");
     window.location = window.location.href;
 }
 
@@ -910,13 +917,13 @@ function setHChange(){
 }
 
 function getData(){
-    $.post("php/getData.php",function(data){
+    $.post("/user/userInfo",function(data){
         var result = $.parseJSON(data);
         if (Object.keys(result).length){
             $("#me_container").html("<div class='containers c1'><img style='float:right;padding:20px' alt='image' src='" + result.url + "'>ID: " + result.id + "<br>Login: " + result.login + "<br>E-mail: " + result.e_mail + "<br>First Name: " + result.fname + "<br>Last Name: " + result.lname + "<br>Role: " + result.role + "</div>");
             user_id = result.id;
             role = result.role;
-			$.post("php/take_media.php",{id:user_id,type:"audio"},function(data){
+			$.post("/media/getMedia",{id:user_id,type:"audio"},function(data){
 				if (data != "not found" && document.getElementById("player").src != data){	
 					document.getElementById("player").src = data;
 				}
@@ -931,7 +938,12 @@ function getData(){
 }
 
 function getTable(){
-    $.post("php/show_data.php",function(data){
-        $('#table_cont').html(data);        
+    $.post("/table/printT",function(data){
+		var result = $.parseJSON(data);
+		var table = "<table class='tt'><tr> <th>№</th> <th>First Name</th> <th>Last Name</th><th>Photo</th> <th>Role</th> <th>Delete<th></tr>"
+		for(var i = 0;i < Object.keys(result).length;i++)
+			table += "<tr class='tr' id = '" + result[i].id + "'><td>" + (i+1) + "</td><td>" + result[i].firstname + "</td><td>" + result[i].lastname + "</td><td><img class='timg' src='" + result[i].url + "' ></img></td><td>" + result[i].role + "</td><td><button class='delete_button' type='submit' name='" + result[i].id + "'><img class='delete_bi' alt='nothing' src='http://s1.iconbird.com/ico/2013/12/505/w450h4001385925290Delete.png'></button></td></tr>";
+		table += "</table>";
+        $('#table_cont').html(table);        
     });
 }
