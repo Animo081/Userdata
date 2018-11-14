@@ -10,7 +10,13 @@
 		
 		function action_signup(){
 			if (($_POST['login']) && ($_POST['password'])){
-				$this->model->sign_up();
+				$this->login = $_POST['login'];
+				$this->password = $_POST['password'];
+				$this->fname = $_POST['fname'];
+				$this->lname = $_POST['lname'];
+				$this->e_mail = $_POST['e_mail'];
+				$this->url = $_POST['image'];
+				$this->model->sign_up($this->login,$this->password,$this->fname,$this->lname,$this->e_mail,$this->url);
 			}else{
 				echo "Заполните поля логина и пароля";
 			}
@@ -18,7 +24,9 @@
 		
 		function action_login(){
 			if (($_POST['login']) && ($_POST['password'])){
-				$row = $this->model->log_in();
+				$this->login = $_POST['login'];
+				$this->password = $_POST['password'];
+				$row = $this->model->log_in($this->login,$this->password);
 				if (!is_string($row)){
 					session_start();
 					$_SESSION['id'] = $row['id'];
@@ -60,10 +68,11 @@
 		}
 		
 		function action_selfediting(){
-			$field = $_POST['field'];
-			$this->model->self_editing();
+			$this->field = $_POST['field'];
+			$this->value = $_POST['value'];
+			$this->model->self_editing($this->field,$this->value);
 			session_start();
-			$_SESSION["$field"] = $_POST['value'];
+			$_SESSION["$this->field"] = $this->value;
 		}
 	}
 

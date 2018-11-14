@@ -9,15 +9,24 @@
 		}
 		
 		function action_setLocal(){
-			$this->model->setLocal();
+			$this->id = $_POST['id'];
+			$this->type = $_POST['type'];
+			$this->filename = $_FILES['file']['tmp_name'];
+			$this->name = $_FILES['file']['name'];
+			$this->model->setLocal($this->id,$this->type,$this->filename,$this->name);
 		}
 		
 		function action_setYoutube(){
-			$this->model->setYoutube();
+			$this->id = $_POST['id'];
+			$this->type = $_POST['type'];
+			$this->url = $_POST['url'];
+			$this->model->setYoutube($this->id,$this->type,$this->url);
 		}
 		
 		function action_getMedia(){
-			$result = $this->model->getMedia();
+			$this->id = $_POST['id'];
+			$this->type = $_POST['type'];
+			$result = $this->model->getMedia($this->id,$this->type);
 			echo $result;	
 		}
 	}

@@ -6,28 +6,27 @@
 			require_once('../../php/connection.php');
 		}
 		
-		function edit(){
+		function edit($field,$value,$id){
 			$conn = OpenCon();
-			$query = "UPDATE userdata SET " . $_POST['field'] . "='" . $_POST['value'] . "' WHERE id='" . $_POST['id'] . "'";   
+			$query = "UPDATE userdata SET " . $field . "='" . $value . "' WHERE id='" . $id . "'";   
 			$conn->query($query);
 			CloseCon($conn);
 		}
 		
-		function delete(){
+		function delete($id){
 			session_start();
 			if (sizeof($_SESSION)!=0)
-				if ($_SESSION['role'] === "admin" or $_SESSION['id'] === $_POST['id']){
+				if ($_SESSION['role'] === "admin" or $_SESSION['id'] === $id){
 					$conn = OpenCon();
-					$query = "DELETE FROM userdata WHERE id=" . $_POST['id'];
+					$query = "DELETE FROM userdata WHERE id=" . $id;
 					$conn->query($query);
-					$query = "DELETE FROM media WHERE id=" . $_POST['id'];
+					$query = "DELETE FROM media WHERE id=" . $id;
 					$conn->query($query);
 					CloseCon($conn);
     			}
 		}
 		
-		function reveal(){
-			$id = $_POST['id'];
+		function reveal($id){
 			$conn = OpenCon();
 			$query = "SELECT * FROM userdata WHERE id=" . $id;
 			$result = $conn->query($query);

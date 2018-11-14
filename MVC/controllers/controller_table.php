@@ -14,16 +14,21 @@
 		}
 		
 		function action_reveal(){
-			$result = $this->model->reveal();
+			$this->id = $_POST['id'];
+			$result = $this->model->reveal($this->id);
 			echo $result;
 		}
 		
 		function action_edit(){
-			$this->model->edit();
+			$this->field = $_POST['field'];
+			$this->value = $_POST['value'];
+			$this->id = $_POST['id'];
+			$this->model->edit($this->field,$this->value,$this->id);
 		}
 		
 		function action_delete(){
-			$this->model->delete();
+			$this->id = $_POST['id'];
+			$this->model->delete($this->id);
 		}
 		
 	}

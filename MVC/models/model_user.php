@@ -6,15 +6,9 @@
 			require_once('../../php/connection.php');
 		}
 		
-		function sign_up(){
+		function sign_up($login,$password,$fname,$lname,$e_mail,$url){
 			$conn = OpenCon();
-			if (!mysqli_num_rows($conn->query("SELECT login FROM userdata WHERE login='".$_POST['login']."'"))){            
-				$login = $_POST['login'];
-				$password = $_POST['password'];
-				$fname = $_POST['fname'];
-				$lname = $_POST['lname'];
-				$e_mail = $_POST['e_mail'];
-				$url = $_POST['image'];
+			if (!mysqli_num_rows($conn->query("SELECT login FROM userdata WHERE login='".$login."'"))){            
 				$id = 1;
 				while(mysqli_num_rows($conn->query("SELECT id FROM userdata WHERE id=" . $id)))
 					$id++;
@@ -26,12 +20,12 @@
 			CloseCon($conn);
 		}
 		
-		function log_in(){
+		function log_in($login,$password){
 			$conn = OpenCon();
-			if (mysqli_num_rows($conn->query("SELECT login FROM userdata WHERE login='".$_POST['login']."'"))){
-				$result = $conn->query("SELECT * FROM userdata WHERE login='".$_POST['login']."'");
+			if (mysqli_num_rows($conn->query("SELECT login FROM userdata WHERE login='".$login."'"))){
+				$result = $conn->query("SELECT * FROM userdata WHERE login='".$login."'");
 				$row = mysqli_fetch_array($result);
-				if ($_POST['password'] === $row['password']){
+				if ($password === $row['password']){
 					$result->close();
 					return $row;
 				}else echo "Неверный пароль";
@@ -39,10 +33,10 @@
 			CloseCon($conn);
 		}
 		
-		function self_editing(){
+		function self_editing($field,$value){
 			$conn = OpenCon();
 			session_start();
-			$query = "UPDATE userdata SET " . $_POST['field'] . "='" . $_POST['value'] . "' WHERE id='" . $_SESSION['id'] . "'";   
+			$query = "UPDATE userdata SET " . $field . "='" . $value . "' WHERE id='" . $_SESSION['id'] . "'";   
 			$conn->query($query);
 			CloseCon($conn);
 		}
